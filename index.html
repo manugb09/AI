@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatGPT Arayüzü</title>
+    <title>Chat Arayüzü</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,11 +24,12 @@
             height: 80%;
             background-color: #222;
             border-radius: 10px;
+            overflow: hidden;
+            position: relative;
         }
 
         .chat-history {
             flex-grow: 1;
-            border-bottom: 1px solid #444;
             padding: 10px;
             overflow-y: auto;
         }
@@ -39,9 +40,10 @@
 
         .user-message {
             text-align: right;
+            color: #0f0;
         }
 
-        .gpt-message {
+        .bot-message {
             text-align: left;
             background-color: #333;
             padding: 5px 10px;
@@ -53,10 +55,14 @@
             padding: 10px;
             background-color: #333;
             border-top: 1px solid #444;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         #user-input {
-            width: 80%;
+            flex-grow: 1;
             padding: 10px;
             border: 1px solid #555;
             border-radius: 5px;
@@ -92,38 +98,27 @@
         function appendMessage(message, sender) {
             const chatHistoryContainer = document.getElementById('chat-history');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('chat-message', sender === 'user' ? 'user-message' : 'gpt-message');
+            messageElement.classList.add('chat-message', sender === 'user' ? 'user-message' : 'bot-message');
             messageElement.textContent = message;
             chatHistoryContainer.appendChild(messageElement);
             chatHistoryContainer.scrollTop = chatHistoryContainer.scrollHeight;
         }
 
         function sendMessage() {
-            const userInput = document.getElementById('user-input').value.trim();
-            if (userInput !== "") {
-                appendMessage(userInput, 'user');
-                document.getElementById('user-input').value = ''; // Mesaj yazma kutusunu temizle
+            const userMessage = document.getElementById('user-input').value.trim();
+            if (!userMessage) return;
+            
+            appendMessage(userMessage, 'user');
+            document.getElementById('user-input').value = '';
 
-                if (userInput.toLowerCase() === 'merhaba') {
-                    appendMessage('Merhaba!', 'gpt');
-                } else {
-                    // Burada, bir API'den ya da backend'den gelen yanıtı simüle ediyoruz.
-                    appendMessage('Gönderiliyor...', 'gpt');
-                    setTimeout(() => {
-                        const gptResponse = "GPT'nin cevabı burada olacak.";
-                        appendMessage(gptResponse, 'gpt');
-                    }, 1000);
-                }
+            if (userMessage.toLowerCase() === 'merhaba') {
+                setTimeout(() => appendMessage('Merhaba!', 'bot'), 500);
             }
         }
 
         document.getElementById('send-btn').addEventListener('click', sendMessage);
-
-        // Enter tuşuna basıldığında mesaj gönder
         document.getElementById('user-input').addEventListener('keydown', function(event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
+            if (event.key === "Enter") sendMessage();
         });
     </script>
 </body>
