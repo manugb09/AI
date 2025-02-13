@@ -3,36 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Clone</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>ChatGPT Arayüzü</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- SOL PANEL (Sohbet Listesi) -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h2>WhatsApp</h2>
-            </div>
-            <div class="chat-list">
-                <div class="chat-item active">Sohbet 1</div>
-                <div class="chat-item">Sohbet 2</div>
-                <div class="chat-item">Sohbet 3</div>
-            </div>
-        </div>
-
-        <!-- SAĞ PANEL (Sohbet Ekranı) -->
+    <div class="chat-container">
         <div class="chat-box">
-            <div class="chat-header">
-                <h3>Sohbet 1</h3>
-            </div>
-            <div class="chat-messages">
-                <div class="message received">Merhaba!</div>
-                <div class="message sent">Selam, nasılsın?</div>
-            </div>
-            <div class="chat-input">
-                <input type="text" id="message-input" placeholder="Mesajınızı yazın...">
-                <button id="send-button">Gönder</button>
-            </div>
+            <div id="chat-log" class="chat-log"></div>
+        </div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Mesajınızı yazın..." />
+            <button id="send-btn">Gönder</button>
         </div>
     </div>
     <script src="script.js"></script>
