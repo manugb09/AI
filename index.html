@@ -108,6 +108,18 @@
     <script>
         let chatHistory = [];
 
+        // Soru-Cevap kütüphanesi
+        const faq = {
+            "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
+            "adın ne?": "Ben bir yapay zeka asistanıyım, adım ChatGPT.",
+            "nasılsın?": "Ben bir yapay zekayım, hissetmiyorum ama yardımcı olmak için buradayım!",
+            "saat kaç?": "Üzgünüm, saat bilgisi veremem. Ama telefonunuzdan bakabilirsiniz.",
+            "ne yapabilirsin?": "Benimle sohbet edebilir, sorular sorabilir ve bilgi alabilirsiniz.",
+            "orospu cocugu kim?": "mert ali kızılpınardır.",
+            "en kral hoca kimdir": " YILMAZ DAL'dır tartışmasız .",
+            "yılmaz dal kimdir":    "gelmiş geçmiş en kral hocadır"
+        };
+
         function appendMessage(message, sender) {
             const chatHistoryContainer = document.getElementById('chat-history');
             const messageElement = document.createElement('div');
@@ -118,20 +130,16 @@
         }
 
         function sendMessage() {
-            const userInput = document.getElementById('user-input').value.trim();
+            const userInput = document.getElementById('user-input').value.trim().toLowerCase();
             if (userInput !== "") {
                 appendMessage(userInput, 'user');
                 document.getElementById('user-input').value = ''; // Mesaj yazma kutusunu temizle
 
-                if (userInput.toLowerCase() === 'merhaba') {
-                    appendMessage('Merhaba!', 'gpt');
+                if (faq[userInput]) {
+                    appendMessage(faq[userInput], 'gpt');
                 } else {
-                    // Burada, bir API'den ya da backend'den gelen yanıtı simüle ediyoruz.
-                    appendMessage('Gönderiliyor...', 'gpt');
-                    setTimeout(() => {
-                        const gptResponse = "GPT'nin cevabı burada olacak.";
-                        appendMessage(gptResponse, 'gpt');
-                    }, 1000);
+                    // Bilinmeyen bir soru geldiğinde
+                    appendMessage('Bilmiyorum, ama size yardımcı olmak için buradayım!', 'gpt');
                 }
             }
         }
