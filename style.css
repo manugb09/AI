@@ -19,4 +19,101 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* SOL PANEL (
+/* SOL PANEL (Sohbet Listesi) */
+.sidebar {
+    width: 30%;
+    background: #ededed;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    background: #075e54;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.chat-list {
+    padding: 10px;
+}
+
+.chat-item {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.chat-item:hover {
+    background: #ddd;
+}
+
+.chat-item.active {
+    background: #b3e5fc;
+}
+
+/* SAĞ PANEL (Sohbet Ekranı) */
+.chat-box {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    background: #e5ddd5;
+}
+
+.chat-header {
+    background: #075e54;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Mesaj Baloncukları */
+.message {
+    padding: 10px;
+    border-radius: 10px;
+    max-width: 60%;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+}
+
+.received {
+    background: white;
+    align-self: flex-start;
+}
+
+.sent {
+    background: #dcf8c6;
+    align-self: flex-end;
+}
+
+/* Mesaj Yazma Alanı */
+.chat-input {
+    display: flex;
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.chat-input button {
+    padding: 10px;
+    border: none;
+    background: #25d366;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
