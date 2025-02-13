@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Uygulaması</title>
+    <title>WhatsApp Clone</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
+        <!-- SOL PANEL (Sohbet Listesi) -->
         <div class="sidebar">
-            <h2>Sohbetler</h2>
-            <ul id="chat-list">
-                <li>Örnek Sohbet 1</li>
-                <li>Örnek Sohbet 2</li>
-            </ul>
+            <div class="sidebar-header">
+                <h2>WhatsApp</h2>
+            </div>
+            <div class="chat-list">
+                <div class="chat-item active">Sohbet 1</div>
+                <div class="chat-item">Sohbet 2</div>
+                <div class="chat-item">Sohbet 3</div>
+            </div>
         </div>
+
+        <!-- SAĞ PANEL (Sohbet Ekranı) -->
         <div class="chat-box">
-            <div class="chat-header">Sohbet Başlığı</div>
+            <div class="chat-header">
+                <h3>Sohbet 1</h3>
+            </div>
             <div class="chat-messages">
-                <p class="message">Merhaba! Bu bir test mesajıdır.</p>
+                <div class="message received">Merhaba!</div>
+                <div class="message sent">Selam, nasılsın?</div>
             </div>
             <div class="chat-input">
                 <input type="text" id="message-input" placeholder="Mesajınızı yazın...">
