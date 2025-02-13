@@ -1,15 +1,22 @@
-document.getElementById("send-button").addEventListener("click", function() {
-    var input = document.getElementById("message-input");
-    var messageText = input.value.trim();
+document.getElementById('send-btn').addEventListener('click', sendMessage);
 
-    if (messageText !== "") {
-        var chatMessages = document.querySelector(".chat-messages");
-        var newMessage = document.createElement("div");
-        newMessage.classList.add("message", "sent");
-        newMessage.innerText = messageText;
-        chatMessages.appendChild(newMessage);
-        
-        input.value = "";
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+function sendMessage() {
+    const userInput = document.getElementById('user-input').value;
+    if (userInput.trim() !== "") {
+        appendMessage(userInput, 'user');
+        document.getElementById('user-input').value = '';
+        // Simulate GPT response (replace with actual API call)
+        setTimeout(() => {
+            appendMessage("GPT'nin cevabı burada olacak.", 'gpt');
+        }, 1000);
     }
-});
+}
+
+function appendMessage(message, sender) {
+    const chatLog = document.getElementById('chat-log');
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('chat-message', sender === 'user' ? 'user-message' : 'gpt-message');
+    messageElement.textContent = message;
+    chatLog.appendChild(messageElement);
+    chatLog.scrollTop = chatLog.scrollHeight;
+}
