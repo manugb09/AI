@@ -106,134 +106,136 @@
     </div>
 
     <script>
+        // Saat bilgisi almak için fonksiyon
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const timeString = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+            return `Şu anda saat: ${timeString}`;
+        }
 
+        // Hava durumu bilgisi almak için fonksiyon (Kütahya için)
+        async function updateWeather() {
+            const apiKey = "d0f92a53fbc4e67ed4e7c362bffc5361"; // Burada kendi API anahtarınızı kullanmalısınız.
+            const city = "Kütahya";
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.cod === 200) {
+                const weather = `Bugün Kütahya'da hava ${data.weather[0].description}, sıcaklık ${data.main.temp}°C.`;
+                return weather;
+            } else {
+                return "Hava durumu verisi alınamadı.";
+            }
+        }
 
         // Soru-Cevap kütüphanesi
         const faq = {
-            "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
-            "adın ne?": "Ben bir yapay zeka asistanıyım, adım ChatGPT.",
-            "nasılsın?": "Ben bir yapay zekayım, hissetmiyorum ama yardımcı olmak için buradayım!",
-            "saat kaç?": "Üzgünüm, saat bilgisi veremem. Ama telefonunuzdan bakabilirsiniz.",
-            "ne yapabilirsin?": "Benimle sohbet edebilir, sorular sorabilir ve bilgi alabilirsiniz.",
             "orospu cocugu kim?": "mert ali kızılpınardır.",
             "en kral hoca kimdir": " YILMAZ DAL'dır tartışmasız .",
             "yılmaz dal kimdir": "gelmiş geçmiş en kral hocadır",
-              "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
-    "adın ne?": "Ben bir yapay zeka asistanıyım, adım manu .",
-    "nasılsın?": "Ben bir yapay zekayım, hissetmiyorum ama yardımcı olmak için buradayım!",
-    "saat kaç?": "Üzgünüm, saat bilgisi veremem. Ama telefonunuzdan bakabilirsiniz.",
-    "ne yapabilirsin?": "Benimle sohbet edebilir, sorular sorabilir ve bilgi alabilirsiniz.",
-    "Türkiye'nin başkenti neresidir?": "Türkiye'nin başkenti Ankara'dır.",
-    "dünyanın en büyük ülkesi hangisidir?": "Rusya, dünyanın en büyük yüzölçümüne sahip ülkesidir.",
-    "en yüksek dağ nedir?": "Everest Dağı, dünyanın en yüksek dağıdır.",
-    "dünyada kaç kıta vardır?": "Dünyada 7 kıta vardır.",
-    "Amerika'nın başkenti neresidir?": "Amerika'nın başkenti Washington, D.C.'dir.",
-    "en hızlı hayvan nedir?": "En hızlı kara hayvanı çita, en hızlı kuş ise gri şahin'dir.",
-    "en uzun nehir hangisidir?": "Nehirlerin uzunluğuna göre, Nil Nehri dünyanın en uzun nehridir.",
-    "dünyanın en büyük okyanusu hangisidir?": "Pasifik Okyanusu, dünyanın en büyük okyanusudur.",
-    "en küçük ülke hangisidir?": "Vatikan, dünyanın en küçük ülkesidir.",
-    "İstanbul hangi ülkede?": "İstanbul, Türkiye'de bulunmaktadır.",
-    "Ay'a ilk kim gitti?": "Ay'a ilk giden insan Neil Armstrong'dur.",
-    "dünyadaki ilk insan kimdir?": "Dünyadaki ilk insan hakkında kesin bir bilgi yoktur, ancak evrimsel olarak Homo sapiens türü ilk insanları oluşturmuştur.",
-    "yapay zeka nedir?": "Yapay zeka, makinelerin insan benzeri zeka ve düşünme süreçlerini taklit etmesi olarak tanımlanır.",
-    "sanal gerçeklik nedir?": "Sanal gerçeklik (VR), kullanıcıyı sanal bir dünyada varmış gibi hissettiren bir teknoloji türüdür.",
-    "internet nedir?": "İnternet, dünya genelindeki bilgisayar ve cihazları birbirine bağlayan bir ağ sistemidir.",
-    "ilk bilgisayar ne zaman icat edildi?": "İlk mekanik bilgisayar, 1837'de Charles Babbage tarafından icat edilmiştir.",
-    "dünya en çok hangi dil konuşulmaktadır?": "Çince, dünyada en çok konuşulan dildir.",
-    "dünyanın en zengin insanı kimdir?": "2025 itibarıyla Elon Musk, dünyanın en zengin insanıdır.",
-    "en eski medeniyet hangisidir?": "Sümerler, bilinen en eski medeniyetlerden biridir.",
-    "Evrenin yaşı nedir?": "Evrenin yaşı yaklaşık 13.8 milyar yıldır.",
-    "dünyada kaç insan var?": "Dünyada yaklaşık 8 milyar insan yaşamaktadır.",
-    "en büyük hayvan nedir?": "Mavi balina, dünyanın en büyük hayvanıdır.",
-    "en uzun yaşamış insan kimdir?": "Jeanne Calment, 122 yıl 164 gün yaşamıştır ve en uzun ömürlü insan olarak kaydedilmiştir.",
-    "ilk bilgisayar oyunu nedir?": "İlk bilgisayar oyunu, 1950'lerde William Higinbotham tarafından yapılan 'Tennis for Two' adlı oyun olarak kabul edilir.",
-    "en büyük teknoloji şirketi hangisidir?": "Apple, piyasa değerine göre dünyanın en büyük teknoloji şirketlerinden biridir.",
-    "internetin ilk adı neydi?": "İnternetin ilk adı ARPANET'tir.",
-    "Mars'ta su var mı?": "Mars'ta su buzu bulunmaktadır.",
-    "Mısır piramitleri nasıl yapılmıştır?": "Mısır piramitlerinin inşası, taş bloklarının elle veya rampalarla taşınarak inşa edilmiştir.",
-    "dünyanın en büyük hayvanat bahçesi nerede?": "Dünyanın en büyük hayvanat bahçesi, Çin'deki Pekin Hayvanat Bahçesi'dir.",
-    "en büyük futbol kulübü hangisidir?": "Futbol kulübü büyüklüğü gelir ve taraftar sayısına göre değişir, ancak Barcelona ve Real Madrid en büyük kulüpler arasında yer alır.",
-    "en eski üniversite hangisidir?": "Dünya üzerindeki en eski üniversite Fas'ta bulunan Fes Üniversitesi'dir.",
-    "ilk araba ne zaman icat edildi?": "İlk araba, 1885'te Karl Benz tarafından icat edilmiştir.",
-    "bilim adamı Albert Einstein ne zaman doğmuştur?": "Albert Einstein, 14 Mart 1879'da doğmuştur.",
-    "Eiffel Kulesi nerede?": "Eiffel Kulesi, Fransa'nın başkenti Paris'te yer almaktadır.",
-    "dünyanın en büyük futbol stadyumu hangisidir?": "Futbol stadyumlarının büyüklüğü genellikle kapasiteye göre ölçülür. Dünyanın en büyük stadyumu, Hindistan'daki Narendra Modi Stadyumu'dur.",
-    "dünyanın en yüksek binası hangisidir?": "Dünyanın en yüksek binası, Dubai'deki Burj Khalifa'dır.",
-    "dünyada en fazla hangi enerji kullanılır?": "Dünyada en fazla fosil yakıtlar (petrol, kömür, doğal gaz) kullanılmaktadır.",
-    "ilk televizyon yayınları ne zaman başladı?": "İlk televizyon yayını 1928'de başlamıştır.",
-    "ilk insanlı uzay uçuşu kim tarafından yapıldı?": "İlk insanlı uzay uçuşu, 1961'de Sovyet kozmonotu Yuri Gagarin tarafından yapılmıştır.",
-    "internetin mucidi kimdir?": "İnternetin mucidi Tim Berners-Lee'dir.",
-    "dünyanın en hızlı treni hangi ülkede?": "Dünyanın en hızlı treni Japonya'da bulunmaktadır.",
-    "En eski yazıt hangi ülkede bulunuyor?": "En eski yazıtlar, Mezopotamya'da bulunan Sümerler tarafından yazılmıştır.",
-    "en değerli taş nedir?": "En değerli taşlardan biri elmastır.",
-    "ilk uçak ne zaman icat edildi?": "İlk uçak, Wright Kardeşler tarafından 1903 yılında icat edilmiştir.",
-    "dünyanın en uzun köprüsü hangisidir?": "Dünyanın en uzun köprüsü, Çin'deki Danyang–Kunshan Büyük Köprüsü'dür.",
-    "ilk sinema filmi ne zaman çekildi?": "İlk sinema filmi 1895'te Lumière Kardeşler tarafından çekilmiştir.",
-    "ilk robot ne zaman yapıldı?": "İlk robot, 1920'lerde Karel Čapek'in yazdığı bir tiyatro oyunundan esinlenerek yapılmıştır.",
-    "dünyanın en hızlı araba markası hangisidir?": "Bugatti, dünyanın en hızlı araba markalarından biridir.",
-    "dünyada kaç ülke vardır?": "Dünyada 195 ülke bulunmaktadır.",
-    "Türkiye'nin en uzun nehri nedir?": "Türkiye'nin en uzun nehri, Kızılırmak'tır.",
-    "ilk televizyon ne zaman icat edildi?": "İlk televizyon, 1927'de Philo Farnsworth tarafından icat edilmiştir.",
-    "dünyanın en büyük adası hangisidir?": "Grönland, dünyanın en büyük adasıdır.",
-    "en eski Türk devleti hangisidir?": "En eski Türk devleti, Göktürkler'dir.",
-    "şu anda dünya en çok hangi sosyal medya platformu kullanılıyor?": "2025 itibarıyla Instagram ve Facebook, dünya genelinde en çok kullanılan sosyal medya platformlarıdır."
+            "merhaba": "Merhaba! Size nasıl yardımcı olabilirim?",
+            "adın ne?": "Ben bir yapay zeka asistanıyım, adım manu .",
+            "nasılsın?": "Ben bir yapay zekayım, hissetmiyorum ama yardımcı olmak için buradayım!",
+            "saat kaç?": "Üzgünüm, saat bilgisi veremem. Ama telefonunuzdan bakabilirsiniz.",
+            "ne yapabilirsin?": "Benimle sohbet edebilir, sorular sorabilir ve bilgi alabilirsiniz.",
+            "Türkiye'nin başkenti neresidir?": "Türkiye'nin başkenti Ankara'dır.",
+            "dünyanın en büyük ülkesi hangisidir?": "Rusya, dünyanın en büyük yüzölçümüne sahip ülkesidir.",
+            "en yüksek dağ nedir?": "Everest Dağı, dünyanın en yüksek dağıdır.",
+            "dünyada kaç kıta vardır?": "Dünyada 7 kıta vardır.",
+            "Amerika'nın başkenti neresidir?": "Amerika'nın başkenti Washington, D.C.'dir.",
+            "en hızlı hayvan nedir?": "En hızlı kara hayvanı çita, en hızlı kuş ise gri şahin'dir.",
+            "en uzun nehir hangisidir?": "Nehirlerin uzunluğuna göre, Nil Nehri dünyanın en uzun nehridir.",
+            "dünyanın en büyük okyanusu hangisidir?": "Pasifik Okyanusu, dünyanın en büyük okyanusudur.",
+            "en küçük ülke hangisidir?": "Vatikan, dünyanın en küçük ülkesidir.",
+            "İstanbul hangi ülkede?": "İstanbul, Türkiye'de bulunmaktadır.",
+            "Ay'a ilk kim gitti?": "Ay'a ilk giden insan Neil Armstrong'dur.",
+            "dünyadaki ilk insan kimdir?": "Dünyadaki ilk insan hakkında kesin bir bilgi yoktur, ancak evrimsel olarak Homo sapiens türü ilk insanları oluşturmuştur.",
+            "yapay zeka nedir?": "Yapay zeka, makinelerin insan benzeri zeka ve düşünme süreçlerini taklit etmesi olarak tanımlanır.",
+            "sanal gerçeklik nedir?": "Sanal gerçeklik (VR), kullanıcıyı sanal bir dünyada varmış gibi hissettiren bir teknoloji türüdür.",
+            "internet nedir?": "İnternet, dünya genelindeki bilgisayar ve cihazları birbirine bağlayan bir ağ sistemidir.",
+            "ilk bilgisayar ne zaman icat edildi?": "İlk mekanik bilgisayar, 1837'de Charles Babbage tarafından icat edilmiştir.",
+            "dünyada kaç insan var?": "Dünyada yaklaşık 8 milyar insan yaşamaktadır.",
+            "en büyük hayvan nedir?": "Mavi balina, dünyanın en büyük hayvanıdır.",
+            "en uzun yaşamış insan kimdir?": "Jeanne Calment, 122 yıl 164 gün yaşamıştır ve en uzun ömürlü insan olarak kaydedilmiştir.",
+            "ilk bilgisayar oyunu nedir?": "İlk bilgisayar oyunu, 1950'lerde William Higinbotham tarafından yapılan 'Tennis for Two' adlı oyun olarak kabul edilir.",
+            "en büyük teknoloji şirketi hangisidir?": "Apple, piyasa değerine göre dünyanın en büyük teknoloji şirketlerinden biridir.",
+            "internetin ilk adı neydi?": "İnternetin ilk adı ARPANET'tir.",
+            "Mars'ta su var mı?": "Mars'ta su buzu bulunmaktadır.",
+            "Mısır piramitleri nasıl yapılmıştır?": "Mısır piramitlerinin inşası, taş bloklarının elle veya rampalarla taşınarak inşa edilmiştir.",
+            "dünyanın en büyük hayvanat bahçesi nerede?": "Dünyanın en büyük hayvanat bahçesi, Çin'deki Pekin Hayvanat Bahçesi'dir.",
+            "en büyük futbol kulübü hangisidir?": "Futbol kulübü büyüklüğü gelir ve taraftar sayısına göre değişir, ancak Barcelona ve Real Madrid en büyük kulüpler arasında yer alır.",
+            "en eski üniversite hangisidir?": "Dünya üzerindeki en eski üniversite Fas'ta bulunan Fes Üniversitesi'dir.",
+            "ilk araba ne zaman icat edildi?": "İlk araba, 1885'te Karl Benz tarafından icat edilmiştir.",
+            "bilim adamı Albert Einstein ne zaman doğmuştur?": "Albert Einstein, 14 Mart 1879'da doğmuştur.",
+            "Eiffel Kulesi nerede?": "Eiffel Kulesi, Fransa'nın başkenti Paris'te yer almaktadır.",
+            "dünyanın en hızlı treni hangi ülkede?": "Dünyanın en hızlı treni Japonya'da bulunmaktadır.",
+            "En eski yazıt hangi ülkede bulunuyor?": "En eski yazıtlar, Mezopotamya'da bulunan Sümerler tarafından yazılmıştır.",
+            "en değerli taş nedir?": "En değerli taşlardan biri elmastır.",
+            "ilk uçak ne zaman icat edildi?": "İlk uçak, Wright Kardeşler tarafından 1903 yılında icat edilmiştir.",
+            "dünyanın en uzun köprüsü hangisidir?": "Dünyanın en uzun köprüsü, Çin'deki Danyang–Kunshan Büyük Köprüsü'dür.",
+            "ilk sinema filmi ne zaman çekildi?": "İlk sinema filmi 1895'te Lumière Kardeşler tarafından çekilmiştir.",
+            "ilk robot ne zaman yapıldı?": "İlk robot, 1920'lerde Karel Čapek'in yazdığı bir tiyatro oyunundan esinlenerek yapılmıştır.",
+            "dünyanın en hızlı araba markası hangisidir?": "Bugatti, dünyanın en hızlı araba markalarından biridir.",
+            "en büyük ada nedir?": "Grönland, dünyanın en büyük adasıdır."
         };
 
-        // Benzer sorulara cevap vermek için bir yardımcı fonksiyon
-        function getBestMatch(userInput) {
-            const lowerCaseInput = userInput.toLowerCase();
-            let bestMatch = null;
-            let highestScore = 0;
+        // Konuşmaları başlat
+        let chatHistory = [];
 
-            // Her bir soruyu kontrol et
-            for (const question in faq) {
-                let score = 0;
-                // Sorudaki her kelimenin kullanıcı input'u ile ne kadar benzer olduğunu kontrol et
-                const questionWords = question.toLowerCase().split(" ");
-                questionWords.forEach(word => {
-                    if (lowerCaseInput.includes(word)) {
-                        score++;
-                    }
-                });
+        // Sistemdeki mesajları eklemek için fonksiyon
+        function displayMessage(message, sender) {
+            const chatHistoryElement = document.getElementById("chat-history");
 
-                // En yüksek skoru tut
-                if (score > highestScore) {
-                    highestScore = score;
-                    bestMatch = faq[question];
-                }
-            }
-
-            return bestMatch || 'Bilmiyorum, ama size yardımcı olmak için buradayım!';
-        }
-
-        function appendMessage(message, sender) {
-            const chatHistoryContainer = document.getElementById('chat-history');
-            const messageElement = document.createElement('div');
-            messageElement.classList.add('chat-message', sender === 'user' ? 'user-message' : 'gpt-message');
+            const messageElement = document.createElement("div");
+            messageElement.classList.add(sender + "-message");
             messageElement.textContent = message;
-            chatHistoryContainer.appendChild(messageElement);
-            chatHistoryContainer.scrollTop = chatHistoryContainer.scrollHeight;
+            chatHistoryElement.appendChild(messageElement);
+            
+            // Scroll en son mesaja kaydır
+            chatHistoryElement.scrollTop = chatHistoryElement.scrollHeight;
         }
 
-        function sendMessage() {
-            const userInput = document.getElementById('user-input').value.trim();
-            if (userInput !== "") {
-                appendMessage(userInput, 'user');
-                document.getElementById('user-input').value = ''; // Mesaj yazma kutusunu temizle
-
-                const response = getBestMatch(userInput);
-                appendMessage(response, 'gpt');
-            }
-        }
-
-        document.getElementById('send-btn').addEventListener('click', sendMessage);
-
-        // Enter tuşuna basıldığında mesaj gönder
-        document.getElementById('user-input').addEventListener('keydown', function(event) {
-            if (event.key === "Enter") {
-                sendMessage();
+        // Kullanıcı mesajı gönderme işlemi
+        document.getElementById("send-btn").addEventListener("click", async () => {
+            const userInput = document.getElementById("user-input").value;
+            const response = await handleUserMessage(userInput); // Asenkron olarak cevap al
+            if (userInput) {
+                displayMessage(userInput, "user");
+                displayMessage(response, "gpt");
+                document.getElementById("user-input").value = ""; // Input'u temizle
             }
         });
+
+        // Enter tuşu ile mesaj gönderme
+        document.getElementById("user-input").addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                document.getElementById("send-btn").click();
+            }
+        });
+
+        // Kullanıcıdan gelen mesajı işleme
+        async function handleUserMessage(userMessage) {
+            userMessage = userMessage.toLowerCase();
+
+            // Hava durumu ve saat sorgusu kontrolü
+            if (userMessage.includes("saat") || userMessage.includes("zaman")) {
+                return updateClock();
+            } else if (userMessage.includes("hava durumu") || userMessage.includes("hava")) {
+                return await updateWeather(); // Asenkron fonksiyonu bekleyerek çalıştır
+            }
+
+            // Sık sorulan sorularda cevap ver
+            if (faq[userMessage]) {
+                return faq[userMessage];
+            }
+
+            // Yeni soru ekleme süreci
+            return "Bu konuda bir cevabım yok. Yardımcı olabilmem için bir cevap verebilir misiniz?";
+        }
     </script>
 </body>
 </html>
