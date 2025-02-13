@@ -1,119 +1,70 @@
-/* Genel Stiller */
 body {
     font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f0f0f0;
 }
 
-/* Konteyner */
-.container {
-    display: flex;
-    width: 90%;
-    height: 90vh;
-    background: white;
+.chat-container {
+    background-color: #fff;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* SOL PANEL (Sohbet Listesi) */
-.sidebar {
-    width: 30%;
-    background: #ededed;
-    border-right: 1px solid #ccc;
-    overflow-y: auto;
-}
-
-.sidebar-header {
-    background: #075e54;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-size: 18px;
-}
-
-.chat-list {
-    padding: 10px;
-}
-
-.chat-item {
-    padding: 15px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
-}
-
-.chat-item:hover {
-    background: #ddd;
-}
-
-.chat-item.active {
-    background: #b3e5fc;
-}
-
-/* SAĞ PANEL (Sohbet Ekranı) */
-.chat-box {
-    width: 70%;
+    width: 400px;
+    max-height: 600px;
     display: flex;
     flex-direction: column;
-    background: #e5ddd5;
 }
 
-.chat-header {
-    background: #075e54;
-    color: white;
-    padding: 15px;
-    font-size: 18px;
-}
-
-.chat-messages {
+.chat-box {
     flex-grow: 1;
     padding: 20px;
     overflow-y: auto;
+    max-height: 500px;
+    border-bottom: 1px solid #ddd;
 }
 
-/* Mesaj Baloncukları */
-.message {
-    padding: 10px;
-    border-radius: 10px;
-    max-width: 60%;
-    margin-bottom: 10px;
-    word-wrap: break-word;
-}
-
-.received {
-    background: white;
-    align-self: flex-start;
-}
-
-.sent {
-    background: #dcf8c6;
-    align-self: flex-end;
-}
-
-/* Mesaj Yazma Alanı */
-.chat-input {
+.input-container {
     display: flex;
     padding: 10px;
-    background: #fff;
     border-top: 1px solid #ddd;
 }
 
-.chat-input input {
-    flex-grow: 1;
+#user-input {
+    width: 100%;
     padding: 10px;
-    border: none;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    outline: none;
 }
 
-.chat-input button {
-    padding: 10px;
-    border: none;
-    background: #25d366;
+#send-btn {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #4CAF50;
     color: white;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+#send-btn:hover {
+    background-color: #45a049;
+}
+
+.chat-message {
+    margin: 10px 0;
+}
+
+.user-message {
+    text-align: right;
+}
+
+.gpt-message {
+    text-align: left;
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
