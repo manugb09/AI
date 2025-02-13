@@ -117,8 +117,35 @@
             "ne yapabilirsin?": "Benimle sohbet edebilir, sorular sorabilir ve bilgi alabilirsiniz.",
             "orospu cocugu kim?": "mert ali kızılpınardır.",
             "en kral hoca kimdir": " YILMAZ DAL'dır tartışmasız .",
-            "yılmaz dal kimdir":    "gelmiş geçmiş en kral hocadır"
+            "yılmaz dal kimdir": "gelmiş geçmiş en kral hocadır"
         };
+
+        // Benzer sorulara cevap vermek için bir yardımcı fonksiyon
+        function getBestMatch(userInput) {
+            const lowerCaseInput = userInput.toLowerCase();
+            let bestMatch = null;
+            let highestScore = 0;
+
+            // Her bir soruyu kontrol et
+            for (const question in faq) {
+                let score = 0;
+                // Sorudaki her kelimenin kullanıcı input'u ile ne kadar benzer olduğunu kontrol et
+                const questionWords = question.toLowerCase().split(" ");
+                questionWords.forEach(word => {
+                    if (lowerCaseInput.includes(word)) {
+                        score++;
+                    }
+                });
+
+                // En yüksek skoru tut
+                if (score > highestScore) {
+                    highestScore = score;
+                    bestMatch = faq[question];
+                }
+            }
+
+            return bestMatch || 'Bilmiyorum, ama size yardımcı olmak için buradayım!';
+        }
 
         function appendMessage(message, sender) {
             const chatHistoryContainer = document.getElementById('chat-history');
@@ -130,17 +157,13 @@
         }
 
         function sendMessage() {
-            const userInput = document.getElementById('user-input').value.trim().toLowerCase();
+            const userInput = document.getElementById('user-input').value.trim();
             if (userInput !== "") {
                 appendMessage(userInput, 'user');
                 document.getElementById('user-input').value = ''; // Mesaj yazma kutusunu temizle
 
-                if (faq[userInput]) {
-                    appendMessage(faq[userInput], 'gpt');
-                } else {
-                    // Bilinmeyen bir soru geldiğinde
-                    appendMessage('Bilmiyorum, ama size yardımcı olmak için buradayım!', 'gpt');
-                }
+                const response = getBestMatch(userInput);
+                appendMessage(response, 'gpt');
             }
         }
 
