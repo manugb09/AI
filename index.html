@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Arayüzü</title>
+    <title>ChatGPT Arayüzü</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,30 +24,26 @@
             height: 80%;
             background-color: #222;
             border-radius: 10px;
-            overflow: hidden;
-            position: relative;
         }
 
         .chat-history {
             flex-grow: 1;
+            border-bottom: 1px solid #444;
             padding: 10px;
             overflow-y: auto;
         }
 
-        .chat-message {
-            margin: 10px 0;
-        }
-
-        .user-message {
-            text-align: right;
-            color: #0f0;
-        }
-
-        .bot-message {
-            text-align: left;
+        .chat-history-item {
+            cursor: pointer;
+            margin: 5px 0;
+            padding: 5px;
             background-color: #333;
-            padding: 5px 10px;
             border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .chat-history-item:hover {
+            background-color: #555;
         }
 
         .input-container {
@@ -55,14 +51,10 @@
             padding: 10px;
             background-color: #333;
             border-top: 1px solid #444;
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            box-sizing: border-box;
         }
 
         #user-input {
-            flex-grow: 1;
+            width: 80%;
             padding: 10px;
             border: 1px solid #555;
             border-radius: 5px;
@@ -83,6 +75,25 @@
         #send-btn:hover {
             background-color: #45a049;
         }
+
+        .chat-message {
+            margin: 10px 0;
+        }
+
+        .user-message {
+            text-align: right;
+        }
+
+        .gpt-message {
+            text-align: left;
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        
+        .loading-message {
+            color: #ccc;
+        }
     </style>
 </head>
 <body>
@@ -95,30 +106,43 @@
     </div>
 
     <script>
+        let chatHistory = [];
+
         function appendMessage(message, sender) {
             const chatHistoryContainer = document.getElementById('chat-history');
             const messageElement = document.createElement('div');
-            messageElement.classList.add('chat-message', sender === 'user' ? 'user-message' : 'bot-message');
+            messageElement.classList.add('chat-message', sender === 'user' ? 'user-message' : 'gpt-message');
             messageElement.textContent = message;
             chatHistoryContainer.appendChild(messageElement);
             chatHistoryContainer.scrollTop = chatHistoryContainer.scrollHeight;
         }
 
         function sendMessage() {
-            const userMessage = document.getElementById('user-input').value.trim();
-            if (!userMessage) return;
-            
-            appendMessage(userMessage, 'user');
-            document.getElementById('user-input').value = '';
+            const userInput = document.getElementById('user-input').value.trim();
+            if (userInput !== "") {
+                appendMessage(userInput, 'user');
+                document.getElementById('user-input').value = ''; // Mesaj yazma kutusunu temizle
 
-            if (userMessage.toLowerCase() === 'merhaba') {
-                setTimeout(() => appendMessage('Merhaba!', 'bot'), 500);
+                if (userInput.toLowerCase() === 'merhaba') {
+                    appendMessage('Merhaba!', 'gpt');
+                } else {
+                    // Burada, bir API'den ya da backend'den gelen yanıtı simüle ediyoruz.
+                    appendMessage('Gönderiliyor...', 'gpt');
+                    setTimeout(() => {
+                        const gptResponse = "GPT'nin cevabı burada olacak.";
+                        appendMessage(gptResponse, 'gpt');
+                    }, 1000);
+                }
             }
         }
 
         document.getElementById('send-btn').addEventListener('click', sendMessage);
+
+        // Enter tuşuna basıldığında mesaj gönder
         document.getElementById('user-input').addEventListener('keydown', function(event) {
-            if (event.key === "Enter") sendMessage();
+            if (event.key === "Enter") {
+                sendMessage();
+            }
         });
     </script>
 </body>
