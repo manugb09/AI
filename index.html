@@ -7,64 +7,61 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #000;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            color: #fff;
         }
 
         .chat-container {
             display: flex;
-            width: 900px;
-            max-height: 600px;
-            background-color: #fff;
+            flex-direction: column;
+            width: 80%;
+            height: 80%;
+            background-color: #222;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         .chat-history {
-            width: 250px;
-            border-right: 1px solid #ddd;
-            padding: 20px;
-            overflow-y: auto;
-            max-height: 500px;
-        }
-
-        .chat-history-item {
-            cursor: pointer;
-            margin: 5px 0;
-            padding: 5px;
-            background-color: #f1f1f1;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .chat-history-item:hover {
-            background-color: #e1e1e1;
-        }
-
-        .chat-box {
             flex-grow: 1;
-            padding: 20px;
+            border-bottom: 1px solid #444;
+            padding: 10px;
             overflow-y: auto;
-            max-height: 500px;
-            border-left: 1px solid #ddd;
+        }
+
+        .chat-message {
+            margin: 10px 0;
+        }
+
+        .user-message {
+            text-align: right;
+        }
+
+        .gpt-message {
+            text-align: left;
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
         }
 
         .input-container {
             display: flex;
             padding: 10px;
-            border-top: 1px solid #ddd;
+            background-color: #333;
+            border-top: 1px solid #444;
         }
 
         #user-input {
-            width: 100%;
+            width: 80%;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #555;
             border-radius: 5px;
+            background-color: #222;
+            color: #fff;
         }
 
         #send-btn {
@@ -80,31 +77,11 @@
         #send-btn:hover {
             background-color: #45a049;
         }
-
-        .chat-message {
-            margin: 10px 0;
-        }
-
-        .user-message {
-            text-align: right;
-        }
-
-        .gpt-message {
-            text-align: left;
-            background-color: #f1f1f1;
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
     <div class="chat-container">
-        <div class="chat-history" id="chat-history">
-            <h3>Sohbet Geçmişi</h3>
-        </div>
-        <div class="chat-box">
-            <div id="chat-log" class="chat-log"></div>
-        </div>
+        <div class="chat-history" id="chat-history"></div>
         <div class="input-container">
             <input type="text" id="user-input" placeholder="Mesajınızı yazın..." />
             <button id="send-btn">Gönder</button>
@@ -112,62 +89,42 @@
     </div>
 
     <script>
-        let chatHistory = [];  // Sohbet geçmişi dizisi
-
-        // Sohbet geçmişine yeni bir sohbet ekleyin
-        function addToHistory(chatId) {
-            const chatHistoryContainer = document.getElementById('chat-history');
-            const chatItem = document.createElement('div');
-            chatItem.classList.add('chat-history-item');
-            chatItem.textContent = Sohbet ${chatId};
-            chatItem.addEventListener('click', () => loadChat(chatId));
-            chatHistoryContainer.appendChild(chatItem);
-        }
-
-        // Geçmiş sohbeti yükleyin
-        function loadChat(chatId) {
-            const chatLog = document.getElementById('chat-log');
-            chatLog.innerHTML = '';
-            const chat = chatHistory.find(c => c.id === chatId);
-            chat.messages.forEach(msg => appendMessage(msg.text, msg.sender));
-        }
-
-        // Yeni bir mesaj ekleyin
         function appendMessage(message, sender) {
-            const chatLog = document.getElementById('chat-log');
+            const chatHistoryContainer = document.getElementById('chat-history');
             const messageElement = document.createElement('div');
             messageElement.classList.add('chat-message', sender === 'user' ? 'user-message' : 'gpt-message');
             messageElement.textContent = message;
-            chatLog.appendChild(messageElement);
-            chatLog.scrollTop = chatLog.scrollHeight;
+            chatHistoryContainer.appendChild(messageElement);
+            chatHistoryContainer.scrollTop = chatHistoryContainer.scrollHeight;
         }
-
-        // Mesajı gönder
-        document.getElementById('send-btn').addEventListener('click', sendMessage);
 
         function sendMessage() {
-            const userInput = document.getElementById('user-input').value;
-            if (userInput.trim() !== "") {
+            const userInput = document.getElementById('user-input').value.trim();
+            if (userInput !== "") {
                 appendMessage(userInput, 'user');
-                document.getElementById('user-input').value = '';
+                document.getElementById('user-input').value = ''; // Mesaj yazma kutusunu temizle
 
-                // Sohbet geçmişine yeni sohbet ekleyin
-                const newChatId = chatHistory.length + 1;
-                const chatObj = {
-                    id: newChatId,
-                    messages: [{ text: userInput, sender: 'user' }]
-                };
-                chatHistory.push(chatObj);
-                addToHistory(newChatId);
-
-                // GPT yanıtı ekleyin (simülasyon)
-                setTimeout(() => {
-                    const gptResponse = "GPT'nin cevabı burada olacak.";
-                    appendMessage(gptResponse, 'gpt');
-                    chatHistory[chatHistory.length - 1].messages.push({ text: gptResponse, sender: 'gpt' });
-                }, 1000);
+                if (userInput.toLowerCase() === 'merhaba') {
+                    appendMessage('Merhaba!', 'gpt');
+                } else {
+                    // Burada, bir API'den ya da backend'den gelen yanıtı simüle ediyoruz.
+                    appendMessage('Gönderiliyor...', 'gpt');
+                    setTimeout(() => {
+                        const gptResponse = "GPT'nin cevabı burada olacak.";
+                        appendMessage(gptResponse, 'gpt');
+                    }, 1000);
+                }
             }
         }
+
+        document.getElementById('send-btn').addEventListener('click', sendMessage);
+
+        // Enter tuşuna basıldığında mesaj gönder
+        document.getElementById('user-input').addEventListener('keydown', function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>
